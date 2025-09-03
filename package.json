@@ -1,0 +1,121 @@
+{
+  "name": "local-korean-todo",
+  "version": "0.1.0",
+  "description": "SQLite 기반 로컬 TODO 리스트",
+  "main": "dist-electron/main.js",
+  "author": "홍길동 <example@example.com>",
+  "homepage": "https://example.com",
+  "scripts": {
+    "dev": "concurrently -k \"pnpm dev:renderer\" \"pnpm dev:electron\"",
+    "dev:renderer": "vite",
+    "dev:electron": "ts-node --project electron/tsconfig.json electron/main.ts",
+    "build": "tsc -p electron/tsconfig.json && vite build",
+    "package": "pnpm build && electron-builder",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,json}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.css": [
+      "prettier --write"
+    ],
+    "*.md": [
+      "prettier --write"
+    ]
+  },
+  "dependencies": {
+    "@radix-ui/react-dialog": "1.0.5",
+    "@tanstack/react-query": "4.35.3",
+    "@tanstack/react-table": "8.11.7",
+    "better-sqlite3": "9.4.0",
+    "electron-store": "8.1.0",
+    "framer-motion": "10.16.4",
+    "lucide-react": "0.298.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-day-picker": "9.0.0",
+    "zustand": "4.4.1",
+    "xlsx": "0.18.5",
+    "zod": "3.22.4"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "17.8.1",
+    "@commitlint/config-conventional": "17.8.1",
+    "@types/node": "20.5.1",
+    "@types/better-sqlite3": "7.6.6",
+    "@types/react": "18.2.16",
+    "@types/react-dom": "18.2.7",
+    "@typescript-eslint/eslint-plugin": "6.7.2",
+    "@typescript-eslint/parser": "6.7.2",
+    "concurrently": "8.2.1",
+    "electron": "30.0.0",
+    "electron-builder": "24.7.0",
+    "eslint": "8.48.0",
+    "eslint-config-prettier": "9.0.0",
+    "eslint-plugin-react": "7.33.2",
+    "husky": "8.0.3",
+    "lint-staged": "13.3.0",
+    "prettier": "3.0.3",
+    "tailwindcss": "3.4.1",
+    "ts-node": "10.9.1",
+    "typescript": "5.2.2",
+    "vite": "5.0.0",
+    "@vitejs/plugin-react": "4.2.1",
+    "prebuild-install": "7.1.1"
+  },
+  "build": {
+    "appId": "com.example.todo",
+    "productName": "ToDoList",
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/better-sqlite3/**"
+    ],
+    "extraResources": [
+      {
+        "from": "electron/db",
+        "to": "db"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "ToDoList-설치파일-윈도우.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "artifactName": "ToDoList-설치파일-맥.${ext}"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "artifactName": "ToDoList-설치파일-리눅스.${ext}",
+      "maintainer": "example@example.com"
+    }
+  }
+}
